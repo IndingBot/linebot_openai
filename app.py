@@ -21,8 +21,8 @@ static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 # Channel Secret
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
-# OPENAI API Key初始化設定
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# # OPENAI API Key初始化設定
+# openai.api_key = os.getenv('OPENAI_API_KEY')
 
 def getTest(car_no):
   import re
@@ -86,9 +86,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    # GPT_answer = GPT_response(msg)
     t = getTest(msg)
-    # print(GPT_answer)
     line_bot_api.reply_message(event.reply_token, TextSendMessage(t))
 
 @handler.add(PostbackEvent)
