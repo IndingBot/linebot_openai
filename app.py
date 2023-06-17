@@ -24,6 +24,38 @@ handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 # OPENAI API Key初始化設定
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+def getTest(car_no):
+  import re
+  import requests
+  from bs4 import BeautifulSoup
+  import pandas as pd
+  from datetime import datetime
+  from lxml import html
+
+  today = datetime.today().strftime('%Y-%m-%d')
+  # car_no = "aaa100" #@param {type:"string"}
+  url = f"https://mobile.epa.gov.tw/Motor/query/Query_Check_Print.aspx?Car_No={car_no}"
+  response = requests.get(url)
+  response.encoding = "utf8"
+  soup = BeautifulSoup(response.text, "html.parser")
+  data = soup.find_all('table')
+  df = pd.read_html(str(data))[2]
+  df = df[df['檢驗別']=='定期檢驗']
+  lastTest = datetime.strptime(str(df['檢測日期'][0]), '%Y%m%d').strftime('%Y-%m-%d')
+  df = pd.read_html(str(data))[3]
+  outdate = df['出廠日'][0]
+  tree = html.fromstring(response.content)
+  t = tree.xpath('//*[@id="lblTestStatus"]/center/font/text()')[0]
+
+  text = soup.find('span', {'id': 'lblTestYearMonth'}).text
+  m = int(re.findall(r'\d+月', text)[0].replace('月',''))
+  y = int(re.findall(r'\d+年', text)[0].replace('年',''))
+  now_y = datetime.now().year
+  y = now_y  if now_y >= y else y
+  date = '%4d%02d01'% (y,m)
+  text = text.replace('註：您',car_no).replace(" ","")
+  status = soup.find('span', {'id': 'lblTestStatus'}).text
+  return status
 
 def GPT_response(text):
     # 接收回應
@@ -54,9 +86,10 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    GPT_answer = GPT_response(msg)
-    print(GPT_answer)
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(GPT_answer))
+    # GPT_answer = GPT_response(msg)
+    t = getTest(msg)
+    # print(GPT_answer)
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(t))
 
 @handler.add(PostbackEvent)
 def handle_message(event):
