@@ -62,7 +62,7 @@ def getTest(car_no):
     split_result = status.split(" ")
     car_no = split_result[0]
     status = " ".join(split_result[1:])
-    t = f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n定檢期間：{text}\n最後定檢日：{lastTest}\n定檢狀態：{status}"
+    t = f"查詢日期：{today} \n查詢車號：{car_no}\n出廠年月：{outdate}\n定檢期間：{text}\n最後定檢日：{lastTest}\n定檢狀態：`{status}`"
     return t
 
 
