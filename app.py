@@ -57,7 +57,7 @@ def getTest(car_no):
   status = soup.find('span', {'id': 'lblTestStatus'}).text
   TestYearMonth = soup.find('span', {'id': 'lblTestYearMonth'}).text
   TestYearMonth = TestYearMonth.replace('註：您','')
-  return status + ":\n" + TestYearMonth
+  return status + "\n" + TestYearMonth
 
 def GPT_response(text):
     # 接收回應
