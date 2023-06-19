@@ -3,3 +3,6 @@ flask
 openai
 gunicorn
 beautifulsoup4
+pandas
+lxml
+datetime
