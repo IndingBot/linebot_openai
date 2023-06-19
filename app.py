@@ -49,11 +49,7 @@ def getTest(car_no):
       df = pd.read_html(str(data))[2]
 
     try:
-        m = int(re.findall(r'\d+月', text)[0].replace('月',''))
-        y = int(re.findall(r'\d+年', text)[0].replace('年',''))
-        now_y = datetime.now().year
-        y = now_y  if now_y >= y else y
-        date = '%4d%02d01'% (y,m)
+        text = soup.find('span', {'id': 'lblTestYearMonth'}).text
         text = text.replace('註：您自','').replace("應每年於發照月份前後1個月內（","每年").replace("）實施排氣定檢","")
         status = soup.find('span', {'id': 'lblTestStatus'}).text
         status = status.replace('註：您','')
@@ -62,8 +58,6 @@ def getTest(car_no):
         status = " ".join(split_result[1:])        
         outdate = df['出廠日'][0]
         t = f"查詢日期：{today} \n查詢車號：{car_no}\n出廠年月：{outdate}\n定檢期間：{text}\n最後定檢日：{lastTest}\n定檢狀態：{status}"
-            text = soup.find('span', {'id': 'lblTestYearMonth'}).text
-
     except:
         t = '請確認車號'
     return t
