@@ -66,8 +66,6 @@ def getTest(car_no):
     import pandas as pd
     from datetime import datetime
     from lxml import html
-    from PIL import Image, ImageDraw, ImageFont
-    import qrcode # 引入qrcode模組
 
     today = datetime.today().strftime('%Y-%m-%d')
     car_no = "ntx6501" #@param {type:"string"}
@@ -86,10 +84,8 @@ def getTest(car_no):
       lastTest = "查無檢驗紀錄"
       df = pd.read_html(str(data))[2]
     outdate = df['出廠日'][0]
+
     
-    tree = html.fromstring(response.content)
-    t = tree.xpath('//*[@id="lblTestStatus"]/center/font/text()')[0]
-    image = Image.new('RGB', (500, 500), (0, 0, 255))
     text = soup.find('span', {'id': 'lblTestYearMonth'}).text
     m = int(re.findall(r'\d+月', text)[0].replace('月',''))
     y = int(re.findall(r'\d+年', text)[0].replace('年',''))
@@ -98,11 +94,12 @@ def getTest(car_no):
     date = '%4d%02d01'% (y,m)
     text = text.replace('註：您',car_no).replace(" ","")
     status = soup.find('span', {'id': 'lblTestStatus'}).text
+    status = status.replace('註：您','')
     match = re.search(r'([A-Za-z0-9-]+)\s+(\d+年度)：(.+)', status)
     if match:
       car_no = match.group(1)
       result = match.group(2)+match.group(3)
-    return f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n最後定檢日：{lastTest}\n定檢狀態：{result}"
+    return f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n最後定檢日：{lastTest}\n定檢狀態：{result}\n定檢期間：{result}"
 
 
 def GPT_response(text):
