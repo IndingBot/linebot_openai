@@ -56,7 +56,7 @@ def getTest(car_no):
     now_y = datetime.now().year
     y = now_y  if now_y >= y else y
     date = '%4d%02d01'% (y,m)
-    text = text.replace('註：您',car_no).replace(" ","")
+    text = text.replace('註：您自','').replace("應每年於發照月份前後1個月內（","每年").replace("）實施排氣定檢","")
     status = soup.find('span', {'id': 'lblTestStatus'}).text
     status = status.replace('註：您','')
     split_result = status.split(" ")
