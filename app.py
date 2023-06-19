@@ -63,7 +63,8 @@ def getTest(car_no):
     if match:
       car_no = match.group(1)
       result = match.group(2)+match.group(3)
-    return f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n最後定檢日：{lastTest}\n定檢狀態：{result}\n定檢期間：{result}"
+    t = f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n最後定檢日：{lastTest}\n定檢狀態：{result}\n定檢期間：{result}"
+    return t
 
 
 def GPT_response(text):
