@@ -59,10 +59,9 @@ def getTest(car_no):
     text = text.replace('註：您',car_no).replace(" ","")
     status = soup.find('span', {'id': 'lblTestStatus'}).text
     status = status.replace('註：您','')
-    match = re.search(r'([A-Za-z0-9-]+)\s+(\d+年度)：(.+)', status)
-    if match:
-      car_no = match.group(1)
-      result = match.group(2)+match.group(3)
+    split_result = status.split(" ")
+    car_no = split_result[0]
+    status = " ".join(split_result[1:])
     t = f"稽查日期：{today} \n稽查車號：{car_no}\n出廠年月：{outdate}\n最後定檢日：{lastTest}\n定檢狀態：{result}\n定檢期間：{result}"
     return t
 
