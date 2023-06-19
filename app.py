@@ -55,6 +55,8 @@ def getTest(car_no):
   date = '%4d%02d01'% (y,m)
   text = text.replace('註：您',car_no).replace(" ","")
   status = soup.find('span', {'id': 'lblTestStatus'}).text
+  TestYearMonth = soup.find('span', {'id': 'lblTestYearMonth'}).text
+  TestYearMonth = TestYearMonth.replace('註：您','')
   return status
 
 def GPT_response(text):
