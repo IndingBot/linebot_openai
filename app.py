@@ -47,9 +47,8 @@ def getTest(car_no):
     except:
       lastTest = "查無檢驗紀錄"
       df = pd.read_html(str(data))[2]
-    outdate = df['出廠日'][0]
-
     
+
     text = soup.find('span', {'id': 'lblTestYearMonth'}).text
     m = int(re.findall(r'\d+月', text)[0].replace('月',''))
     y = int(re.findall(r'\d+年', text)[0].replace('年',''))
@@ -62,7 +61,11 @@ def getTest(car_no):
     split_result = status.split(" ")
     car_no = split_result[0]
     status = " ".join(split_result[1:])
-    t = f"查詢日期：{today} \n查詢車號：{car_no}\n出廠年月：{outdate}\n定檢期間：{text}\n最後定檢日：{lastTest}\n定檢狀態：`{status}`"
+    try:
+        outdate = df['出廠日'][0]
+        t = f"查詢日期：{today} \n查詢車號：{car_no}\n出廠年月：{outdate}\n定檢期間：{text}\n最後定檢日：{lastTest}\n定檢狀態：{status}"
+    except:
+        t = '請確認車號'
     return t
 
 
