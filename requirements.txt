@@ -6,4 +6,4 @@ beautifulsoup4
 pandas
 lxml
 datetime
-
+Pillow
